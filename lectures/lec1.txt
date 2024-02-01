@@ -1,0 +1,44 @@
+
+---------------JAVASCRIPT-----------
+=>java script is asyncronous language
+=>syncronous means to run line by line
+=>asyncronous task in java script is run for the task which is time consuming ans is forced to run in backend
+=>to make it syncronous we use promises ,call back function (when we call one function passed inside another function as an argument).
+
+=>javascript is a weakly typed language ,it is object oriented programming language ,versatile langauge,data types can be switched dynamically ,primitive and reference type 
+
+
+=>Node.js is a JavaScript runtime environment that executes JavaScript code outside of a web browser. It is an open-source, cross-platform framework that is popular and lightweight. Node.js achieves low latency and high throughput by taking a “non-blocking” approach to serving requests, meaning that it does not wait for I/O requests to return. Node.js is used by many big companies like Netflix and Uber
+
+=>on server side we can do database ,authentiaiton ,input validation, your business logic 
+
+=>we can use node js more than server side code like utility scripts and build tools
+
+
+=> node role in web development is to create server and listen incoming request  and handle request ,validate input ,connect to database and return responses 
+
+
+=> why to choose node js as backend
+ Node.js is popular because it has a huge, active, open-source, JavaScript-based ecosystem.
+
+ pros of node js :
+ it is asyncronous event-driven i/o ,single threadeded , uses javascript ,large community ,wide range of modules 
+
+----------------------------
+browser history
+-
+1.browser previously was used to run html and css only 
+2.google  work on v8 engine
+why node js introduce?
+2.5 differnce between framework and library 
+library dont have any rules 
+3.node js is a framework of js, it provide local runtime enviroment for javascript and it has file handling feature 
+4.it is first written by ryan dahl.
+
+5.chrome dont have file handling feature due to security reasons.
+6. why node js is introduce?
+
+
+modules(parts)
+in every programming language there is modules to avoid consuming
+
