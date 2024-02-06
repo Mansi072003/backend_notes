@@ -16,6 +16,12 @@ const PORT = 4444;
 const path=require("path")
 const hbs=require("hbs")
 hbs.registerPartials(__dirname + '/views/partials', function (err) {})
+const { v4: uuidv4 } = require('uuid')
+app.get("getblogs",(req,res)=>{
+  res.render("blogpage",{
+  blogs
+  });
+})
 
 let task=[];
 let blogarr=[];
@@ -74,13 +80,23 @@ app.post("/addblogs",(req,res)=>{
 
     author,// author:author,
     category,// category:category,
-    blog// blog:blog
+    blog,// blog:blog
+    blogId:uuidv4()
   }
   blogarr.push(obj);
    // console.log(req.body);
   // console.log(author,category,blog);
-  res.send("data received");
+  // res.send(blogarr);
+  res.redirect("/getblogs");
 })
+
+app.get("/delete/:blogId",(req,res)=>{
+  // console.log(req.params.blogId);
+  
+})
+
+
+//delete blog
 
 app.get("/getblogs",(req,res)=>{
   res.render("blogpage",{
@@ -89,6 +105,7 @@ app.get("/getblogs",(req,res)=>{
     // lastName:"Tiwari",
   });
 })  
+
 
 
 
