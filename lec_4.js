@@ -92,7 +92,8 @@ app.post("/addblogs",(req,res)=>{
 
 app.get("/delete/:blogId",(req,res)=>{
   // console.log(req.params.blogId);
-  
+  blogarr=blogarr.filter((item)=>item.blogId!=req.params.blogId);
+  res.redirect("/getblogs");
 })
 
 
