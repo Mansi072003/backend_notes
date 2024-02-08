@@ -19,7 +19,7 @@ hbs.registerPartials(__dirname + '/views/partials', function (err) {})
 const { v4: uuidv4 } = require('uuid')
 app.get("getblogs",(req,res)=>{
   res.render("blogpage",{
-  blogs
+  blogarr
   });
 })
 
@@ -80,11 +80,11 @@ app.get("/addtasks", (req,res)=>{
 })
 
 app.post("/addblogs",(req,res)=>{
-  const {author,category,blog} =req.body;
+  const {name,Class,blog} =req.body;
   const obj={
 
-    author,// author:author,
-    category,// category:category,
+    name,// author:author,
+    Class,// category:category,
     blog,// blog:blog
     blogId:uuidv4()
   }
@@ -123,14 +123,28 @@ app.get("/update/:blogId",(req,res)=>{
   
 })
 
+
 app.post("/updateblog",(req,res)=>{
   const {name,Class,blog,blogId}=req.body;
  const newObj={
-  name:name,
+  name,
+  Class,
+  blog,
+  blogId
 
  }
+ blogarr=blogarr.map((item)=>{
+  if(item.blogId==blogId){
+    return newObj
+ }
+
+ return item
+
 
 })
+res.redirect("/getblogs");
+})
+
 
 
 app.listen(PORT, () => {//listen use to start and moniter request 
