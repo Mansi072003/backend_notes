@@ -43,12 +43,17 @@ app.use("/", (req, res,next) => {
 // });
 
 
-// app.get("/path/:name/:class", (req, res) => {
+app.get("/path/:name/:class", (req, res) => {
 
-//   console.log(req.params)
-//  res.send(`Hello ${req.params.name}`);
+  console.log(req.params)
+ res.send(`Hello ${req.params.name}`);
 
+})
+
+// app.get ("/path/abhishek",(req,res)=>{
+//   res.send("Hello Abhishek");
 // })
+
 
 // app.get("/path2",(req,res) =>{
 //   console.log(req.query);
@@ -90,7 +95,7 @@ app.post("/addblogs",(req,res)=>{
   res.redirect("/getblogs");
 })
 
-app.get("/delete/:blogId",(req,res)=>{
+app.get("/delete/:blogId",(req,res)=>{//when we hit this object comes in params
   // console.log(req.params.blogId);
   blogarr=blogarr.filter((item)=>item.blogId!=req.params.blogId);
   res.redirect("/getblogs");
@@ -107,9 +112,27 @@ app.get("/getblogs",(req,res)=>{
   });
 })  
 
+app.get("/update/:blogId",(req,res)=>{
+  console.log(req.params);
+  updateblog=blogarr.filter((item)=>item.blogId==req.params.blogId);
+  // const blog=blogarr.find((item)=>item.blogId==req.params.blogId);
+  console.log(updateblog);
+  res.render("updateblog",{
+    updateblog:updateblog[0]
+  })
+  
+})
 
+app.post("/updateblog",(req,res)=>{
+  const {name,Class,blog,blogId}=req.body;
+ const newObj={
+  name:name,
+
+ }
+
+})
 
 
 app.listen(PORT, () => {//listen use to start and moniter request 
   console.log("http://localhost:" + PORT);// local machine address
-});
+}); 
