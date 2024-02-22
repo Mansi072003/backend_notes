@@ -12,7 +12,7 @@
 const { log } = require("console");
 const express = require("express");
 const app = express();//making instance
-const PORT = 4444;
+const PORT = 5001;
 const path=require("path")
 const hbs=require("hbs")
 hbs.registerPartials(__dirname + '/views/partials', function (err) {})
@@ -26,6 +26,22 @@ app.get("getblogs",(req,res)=>{
 let task=[];
 let blogarr=[];
 
+//mongoose
+const mongoose=require("mongoose");
+const { Schema } = mongoose;
+
+//here we define blog schema
+const blogSchema=new Schema({
+  name:String,
+  Class:String,
+  blog:String,
+  blogId:String
+})
+
+//we create model from schema so that we can perform operation on database
+//mongoose.model return object which have various method to perform operation on database
+
+const Blog=mongoose.model("Blog",blogSchema);
 
 app.use(express.static(path.join(__dirname,"public")))
 app.use(express.urlencoded({extended:true}));
@@ -79,7 +95,7 @@ app.get("/addtasks", (req,res)=>{
   res.send("data received");
 })
 
-app.post("/addblogs",(req,res)=>{
+app.post("/addblogs",async(req,res)=>{
   const {name,Class,blog} =req.body;
   const obj={
 
@@ -88,35 +104,45 @@ app.post("/addblogs",(req,res)=>{
     blog,// blog:blog
     blogId:uuidv4()
   }
+  await Blog.create(obj);
+  res.redirect("/getblogs");
+
+
+
   blogarr.push(obj);
    // console.log(req.body);
   // console.log(author,category,blog);
   // res.send(blogarr);
-  res.redirect("/getblogs");
+ 
 })
 
-app.get("/delete/:blogId",(req,res)=>{//when we hit this object comes in params
+app.get("/delete/:blogId",async(req,res)=>{//when we hit this object comes in params
   // console.log(req.params.blogId);
   blogarr=blogarr.filter((item)=>item.blogId!=req.params.blogId);
+  let blogId=req.params.blogId;
+ await Blog.deleteOne({blogId});
   res.redirect("/getblogs");
 })
 
 
 //delete blog
 
-app.get("/getblogs",(req,res)=>{
+app.get("/getblogs",async (req,res)=>{
+  let blogs=await Blog.find();
   res.render("blogpage",{
-    blogarr
+    blogarr:blogs
     // firstName:"Mansi" ,
     // lastName:"Tiwari",
   });
 })  
 
-app.get("/update/:blogId",(req,res)=>{
-  console.log(req.params);
-  updateblog=blogarr.filter((item)=>item.blogId==req.params.blogId);
+app.get("/update/:blogId",async (req,res)=>{
+  console.log(req.params.blogId);
+  // updateblog=blogarr.filter((item)=>item.blogId==req.params.blogId);
   // const blog=blogarr.find((item)=>item.blogId==req.params.blogId);
-  console.log(updateblog);
+  // console.log(updateblog);
+  let updateblog= await Blog.find({blogId:req.params.blogId});
+  // console.log(updateblog);
   res.render("updateblog",{
     updateblog:updateblog[0]
   })
@@ -124,29 +150,39 @@ app.get("/update/:blogId",(req,res)=>{
 })
 
 
-app.post("/updateblog",(req,res)=>{
-  const {name,Class,blog,blogId}=req.body;
- const newObj={
-  name,
-  Class,
-  blog,
-  blogId
+app.post("/updateblog",async(req,res)=>{
+  const blogId = req.body.blogId;
+  // console.log(req.body);
+  // console.log(blogId);
+//   const {name,Class,blog,blogId}=req.body;
+//  const newObj={
+//   name,
+//   Class,
+//   blog,
+//   blogId
 
- }
- blogarr=blogarr.map((item)=>{
-  if(item.blogId==blogId){
-    return newObj
- }
+//  }
+ await Blog.updateOne({blogId},req.body);
+//  blogarr=blogarr.map((item)=>{
+//   if(item.blogId==blogId){
+//     return newObj
+//  }
 
- return item
+//  return item
 
 
-})
+// })
 res.redirect("/getblogs");
 })
 
-mongoose.connect(mong)
+mongoose.connect("mongodb://localhost:27017/blogs")
+.then(() => {
+  app.listen(PORT, () => {
+    // 3000 is port number
+    console.log("http://localhost:" + PORT); // http://localhost:3000
+  }); // it will start the server  // it will run only once
+  
+})
 
-app.listen(PORT, () => {//listen use to start and moniter request 
-  console.log("http://localhost:" + PORT);// local machine address
-}); 
+//we define schema and model in mongoose so that we can structure our data
+
