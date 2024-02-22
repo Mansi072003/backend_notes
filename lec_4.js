@@ -145,7 +145,7 @@ app.post("/updateblog",(req,res)=>{
 res.redirect("/getblogs");
 })
 
-
+mongoose.connect(mong)
 
 app.listen(PORT, () => {//listen use to start and moniter request 
   console.log("http://localhost:" + PORT);// local machine address
